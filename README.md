@@ -3,7 +3,7 @@
 [![Build-Status](https://img.shields.io/badge/Build-Stable-green)](#)
 [![License](https://img.shields.io/badge/License-MIT-blue)](#)
 [![Platform](https://img.shields.io/badge/Environment-Vercel--Edge-black)](#)
-[![Deployment](https://img.shields.io/badge/Maintained%20By-Wahid%20Official-191919)](#)
+[![Deployment](https://img.shields.io/badge/Maintained%20By-HidzzY%20Tamvan-191919)](#)
 
 A high-performance system benchmarking tool designed to evaluate the operational limits of modern computing architectures. This suite executes synchronized stress-vectors across the CPU, RAM, and GPU to analyze thermal throttling, memory heap management, and rasterization throughput.
 
