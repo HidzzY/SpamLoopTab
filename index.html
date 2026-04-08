@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tab New</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: #191919; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <canvas id="c"></canvas>
+    <script>
+        /**
+         * @project Hardware Test
+         * @author HidzzY
+         * @description Synthetic workload for CPU/RAM/GPU benchmarking.
+         */
+        
+        let running = true;
+        let memory = [];
+
+        const burnCPU = () => {
+            const loop = () => {
+                if (!running) return;
+                for (let i = 0; i < 5e6; i++) { Math.sqrt(i * Math.random()); }
+                setTimeout(loop, 0);
+            };
+            loop();
+        };
+
+        const burnRAM = () => {
+            setInterval(() => {
+                if (!running) return;
+                memory.push(new Array(500000).fill(Math.random()));
+                console.log("[MEM_LOG]: Allocated blocks ->", memory.length);
+            }, 100);
+        };
+
+        const canvas = document.getElementById("c");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const burnGPU = () => {
+            const draw = () => {
+                if (!running) return;
+                for (let i = 0; i < 1000; i++) {
+                    ctx.fillStyle = `rgb(${Math.random()*255},${Math.random()*255},${Math.random()*255})`;
+                    ctx.fillRect(Math.random()*canvas.width, Math.random()*canvas.height, 20, 20);
+                }
+                requestAnimationFrame(draw);
+            };
+            draw();
+        };
+
+        for (let i = 0; i < 4; i++) burnCPU();
+        burnRAM();
+        burnGPU();
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                running = false;
+                memory = [];
+                console.warn("[SYSTEM_SHUTDOWN]: Stress test terminated by user.");
+            }
+        });
+    </script>
+</body>
+</html>
